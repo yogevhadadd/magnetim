@@ -1,0 +1,47 @@
+name: test2
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+   #sdk: ">=2.12.0 <2.19.0"
+   sdk: '>=3.4.0'
+   flutter: ">=1.20.0"
+
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  camera: ^0.10.0
+  permission_handler: ^10.0.0
+  firebase_auth: ^5.1.0
+  firebase_core: ^3.1.0
+  firebase_storage: ^12.0.0
+  firebase_analytics: ^11.0.1
+  image_picker: ^1.0.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  fonts:
+    - family: DancingScript-VariableFont_wght
+      fonts:
+        - asset: assets/fonts/DancingScript-VariableFont_wght.ttf
+
+  assets:
+    - assets/cover.jpeg
+    - assets/mainPage.jpeg
+    - assets/cameraPage.jpeg
+    - assets/simpleMisgert.jpeg
+    - assets/azMisgert.jpeg
+    - assets/stripMisgert.jpeg
+    - assets/papiyon.jpeg
+
+  uses-material-design: true
