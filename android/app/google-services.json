@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "580646667465",
+    "project_id": "insta-moment",
+    "storage_bucket": "insta-moment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580646667465:android:ae29725fbd0aac1c6df918",
+        "android_client_info": {
+          "package_name": "com.djzarka.test2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9CSa5Yq6tZxwlpULAtMrWycNdHMh8xAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580646667465:android:914c5c30132973096df918",
+        "android_client_info": {
+          "package_name": "com.example.insta_moment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9CSa5Yq6tZxwlpULAtMrWycNdHMh8xAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
