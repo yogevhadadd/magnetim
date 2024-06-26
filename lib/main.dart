@@ -8,11 +8,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options:  DefaultFirebaseOptions.currentPlatform,
-      // apiKey: 'AIzaSyCCqiURm_L8sG1djmtXdzylPa-wQf9KqBI',
-      // appId: '1:580646667465:ios:df2aa35ba72e744c6df918',
-      // messagingSenderId: '580646667465',
-      // projectId: 'insta-moment',
-      // storageBucket: 'insta-moment.appspot.com',
+    //   apiKey: 'AIzaSyCCqiURm_L8sG1djmtXdzylPa-wQf9KqBI',
+    //   appId: '1:580646667465:ios:df2aa35ba72e744c6df918',
+    //   messagingSenderId: '580646667465',
+    //   projectId: 'insta-moment',
+    //   storageBucket: 'insta-moment.appspot.com',
+
     // ),
   );
   //   File imageFile = File('/Users/djzarka/AndroidStudioProjects/test2/assets/cover.jpeg');
