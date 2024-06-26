@@ -12,6 +12,7 @@ void main() async {
       messagingSenderId: '580646667465',
       projectId: 'insta-moment',
       storageBucket: 'insta-moment.appspot.com',
+
     ),
   );
   //   File imageFile = File('/Users/djzarka/AndroidStudioProjects/test2/assets/cover.jpeg');
