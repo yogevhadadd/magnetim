@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:test2/Gloya.dart';
@@ -65,7 +67,13 @@ class _CameraPageState extends State<CameraPage> {
   Future<void> requestCameraPermission() async {
     var status = await Permission.camera.status;
     if (!status.isGranted) {
-      await Permission.camera.request();
+      if (await Permission.camera.request().isGranted) {
+        log('Camera permission granted');
+      } else {
+        log('Camera permission denied');
+      }
+    } else {
+      log('Camera permission already granted');
     }
   }
 
