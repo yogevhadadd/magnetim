@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:developer';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:test2/Gloya.dart';
@@ -8,8 +8,7 @@ import 'package:test2/Strip.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CameraPage extends StatefulWidget {
-  final String
-      camera; // 'final' instead of 'late' here, as it will be set via constructor
+  final String camera; // 'final' instead of 'late' here, as it will be set via constructor
   final String firstName;
   final String seconedName;
   final String date;
@@ -36,11 +35,15 @@ class _CameraPageState extends State<CameraPage> {
   late String _imagePath;
   late String _imagePath2;
   late String _imagePath3;
-  final String
-      camera; // 'final' instead of 'late' here, as it is set via constructor
+  final String camera;
   final String firstName;
   final String seconedName;
   final String date;
+  int countdown = 5000;
+  int countdownShow = 5000;
+  int stripCount = 0;
+  int displayTime = 0;
+  bool _isFlashing = false; // משתנה מצב להבהוב
 
   _CameraPageState(
       {Key? key,
@@ -54,6 +57,29 @@ class _CameraPageState extends State<CameraPage> {
     super.initState();
     requestCameraPermission();
     _initCamera();
+    startCountdown();
+  }
+
+  void startCountdown() {
+    Timer.periodic(Duration(milliseconds: 10), (timer) {
+      displayTime = (countdown ~/ 1000);
+      if (countdown > 1 ) {
+        setState(() {
+          if (stripCount == 0
+              || stripCount == 1 && _imagePath != ' '
+              || stripCount == 2 && _imagePath2 != ' ' ) {
+            countdown = countdown - 10;
+          }
+        });
+      } else {
+        if (camera == "simpleMisgert" || camera == "azMisgert" || stripCount == 3) {
+          timer.cancel();
+        }
+      }
+      if (countdown == 0 ) {
+        _takePicture();
+      }
+    });
   }
 
   @override
@@ -81,7 +107,7 @@ class _CameraPageState extends State<CameraPage> {
     if (await Permission.camera.request().isGranted) {
       final cameras = await availableCameras();
       final frontCamera = cameras.firstWhere(
-          (camera) => camera.lensDirection == CameraLensDirection.back);
+          (camera) => camera.lensDirection == CameraLensDirection.front);
 
       _cameraController = CameraController(
         frontCamera,
@@ -93,9 +119,9 @@ class _CameraPageState extends State<CameraPage> {
 
       // Wait for the camera to initialize, then take a picture after 3 seconds
       _initializeControllerFuture?.then((_) {
-        Future.delayed(Duration(seconds: 1), () {
-          _takePicture();
-        });
+        // Future.delayed(Duration(seconds: 1), () {
+        //   _takePicture();
+        // });
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -103,6 +129,7 @@ class _CameraPageState extends State<CameraPage> {
       );
     }
   }
+
 
   Future<void> _takePicture() async {
     if (!_cameraController!.value.isInitialized) {
@@ -114,66 +141,142 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     try {
-      final image = await _cameraController!.takePicture();
-      setState(() {
-        _imagePath = image.path;
-      });
+      _flashScreen(); // הפעלת ההבהוב
+
+      if (stripCount == 0) {
+        final image = await _cameraController!.takePicture();
+        setState(() {
+          _imagePath = image.path;
+        });
+      }
+
       if (camera == "simpleMisgert") {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Gloya(
-                camera: camera,
-                imagePath: _imagePath,
-                firstName: firstName,
-                seconedName: seconedName,
-                date: date),
+            builder: (context) => Gloya(camera: camera, imagePath: _imagePath, firstName: firstName, seconedName: seconedName, date: date),
           ),
         );
-      }
-      if (camera == "azMisgert") {
+      } else if (camera == "azMisgert") {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MisgertAz(
-                camera: camera,
-                imagePath: _imagePath,
-                firstName: firstName,
-                seconedName: seconedName,
-                date: date),
+            builder: (context) => MisgertAz(camera: camera, imagePath: _imagePath, firstName: firstName, seconedName: seconedName, date: date),
           ),
         );
+      } else if (camera == "stripMisgert") {
+        if (stripCount == 1) {
+          final image2 = await _cameraController!.takePicture();
+          setState(() {
+            _imagePath2 = image2.path;
+          });
+        }
+        if (stripCount == 2) {
+          final image3 = await _cameraController!.takePicture();
+          setState(() {
+            _imagePath3 = image3.path;
+          });
+        }
+        if (stripCount < 3) {
+          stripCount ++;
+          countdown = 5000;
+        }
+        if (stripCount == 3) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Strip(camera: camera, imagePath2: _imagePath2, imagePath3: _imagePath3, imagePath: _imagePath, firstName: firstName, seconedName: seconedName, date: date),
+            ),
+          );
+        }
       }
-      if (camera == "stripMisgert") {
-        Future.delayed(Duration(seconds: 1));
-        final image2 = await _cameraController!.takePicture();
-        setState(() {
-          _imagePath2 = image2.path;
-        });
-        Future.delayed(Duration(seconds: 1));
-        final image3 = await _cameraController!.takePicture();
-        setState(() {
-          _imagePath3 = image3.path;
-        });
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Strip(
-                camera: camera,
-                imagePath2: _imagePath2,
-                imagePath3: _imagePath3,
-                imagePath: _imagePath,
-                firstName: firstName,
-                seconedName: seconedName,
-                date: date),
-          ),
-        );
-      }
-      // Navigate to Page5 after taking the picture
     } catch (e) {
       print(e);
     }
   }
+
+  void _flashScreen() {
+    setState(() {
+      _isFlashing = true;
+    });
+    Future.delayed(Duration(milliseconds: 100), () {
+      setState(() {
+        _isFlashing = false;
+      });
+    });
+  }
+
+
+  // Future<void> _takePicture() async {
+  //   if (!_cameraController!.value.isInitialized) {
+  //     return;
+  //   }
+  //
+  //   if (_cameraController!.value.isTakingPicture) {
+  //     return;
+  //   }
+  //
+  //   try {
+  //     final image = await _cameraController!.takePicture();
+  //     setState(() {
+  //       _imagePath = image.path;
+  //     });
+  //     if (camera == "simpleMisgert") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => Gloya(
+  //               camera: camera,
+  //               imagePath: _imagePath,
+  //               firstName: firstName,
+  //               seconedName: seconedName,
+  //               date: date),
+  //         ),
+  //       );
+  //     }
+  //     if (camera == "azMisgert") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => MisgertAz(
+  //               camera: camera,
+  //               imagePath: _imagePath,
+  //               firstName: firstName,
+  //               seconedName: seconedName,
+  //               date: date),
+  //         ),
+  //       );
+  //     }
+  //     if (camera == "stripMisgert") {
+  //       Future.delayed(Duration(seconds: 1));
+  //       final image2 = await _cameraController!.takePicture();
+  //       setState(() {
+  //         _imagePath2 = image2.path;
+  //       });
+  //       Future.delayed(Duration(seconds: 1));
+  //       final image3 = await _cameraController!.takePicture();
+  //       setState(() {
+  //         _imagePath3 = image3.path;
+  //       });
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => Strip(
+  //               camera: camera,
+  //               imagePath2: _imagePath2,
+  //               imagePath3: _imagePath3,
+  //               imagePath: _imagePath,
+  //               firstName: firstName,
+  //               seconedName: seconedName,
+  //               date: date),
+  //         ),
+  //       );
+  //     }
+  //     // Navigate to Page5 after taking the picture
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -190,12 +293,43 @@ class _CameraPageState extends State<CameraPage> {
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return Container(
-              width: screenSize.width * 1,
-              child: CameraPreview(_cameraController!),
+            return Stack(
+              children: [
+                Container(
+                  width: screenSize.width,
+                  child: CameraPreview(_cameraController!),
+                ),
+                Center(
+                  child: countdown > 0
+                      ? Container(
+                    width: 250,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black54,
+                    ),
+                    child: Center(
+                      child: Text(
+                        (displayTime + 1).toString(),
+                        style: TextStyle(
+                          fontSize: 100,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+                      : Container(),
+                ),
+                if (_isFlashing)
+                  Container(
+                    color: Colors.white,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+              ],
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
