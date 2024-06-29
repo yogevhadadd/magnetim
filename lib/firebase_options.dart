@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'insta-moment.appspot.com',
     measurementId: 'G-FBSP2Y8545',
   );
+
 }

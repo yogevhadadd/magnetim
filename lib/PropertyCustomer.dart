@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'DecideOption.dart';
 
@@ -13,50 +12,32 @@ class PropertyCustomer extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/cover.jpeg'),
-            fit: BoxFit.cover,
+      resizeToAvoidBottomInset: false, // Prevent resize when keyboard opens
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/cover.jpeg'),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        child:Row(children: [
-          Container(width: screenSize.width * 0.66,
-            height: screenSize.height,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: screenSize.height * 0.4),
-                    Container(
-                      width: screenSize.width * 0.58, // 80% of screen width
-                      height: screenSize.height * 0.05,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: TextField(
-                          style: TextStyle(fontSize: 40), // Set font size here
-                          controller: firstController,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    Row(children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child:  Row(children: [
+                  // SizedBox(width: screenSize.width * 0.01,),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: screenSize.height * 0.4),
                       Container(
-                        width: screenSize.width * 0.58, // 80% of screen width
+                        width: screenSize.width * 0.60,
                         height: screenSize.height * 0.05,
-
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0),
                           borderRadius: BorderRadius.circular(8),
@@ -65,20 +46,17 @@ class PropertyCustomer extends StatelessWidget {
                         child: Directionality(
                           textDirection: TextDirection.rtl,
                           child: TextField(
-                            style: const TextStyle(fontSize: 40,
-                            ), // Set font size here
-                            controller: secondController,
-                            decoration: const InputDecoration(
+                            style: TextStyle(fontSize: 70),
+                            controller: firstController,
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                             ),
                           ),
                         ),
                       ),
-                    ],),
-                    SizedBox(height: screenSize.height * 0.025),
-                    Row(children: [
+                      SizedBox(height: screenSize.height * 0.025),
                       Container(
-                        width: screenSize.width * 0.58, // 80% of screen width
+                        width: screenSize.width * 0.6,
                         height: screenSize.height * 0.05,
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0),
@@ -88,7 +66,27 @@ class PropertyCustomer extends StatelessWidget {
                         child: Directionality(
                           textDirection: TextDirection.rtl,
                           child: TextField(
-                            style: TextStyle(fontSize: 40), // Set font size here
+                            style: TextStyle(fontSize: 70),
+                            controller: secondController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: screenSize.height * 0.025),
+                      Container(
+                        width: screenSize.width * 0.6,
+                        height: screenSize.height * 0.05,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: TextField(
+                            style: TextStyle(fontSize: 70),
                             controller: dateController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -96,38 +94,41 @@ class PropertyCustomer extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ],),
-                    SizedBox(height: screenSize.height * 0.303),
-                    Row(children: [
-                      SizedBox(width: screenSize.width * 0.34,),
-                      Opacity(
-                        opacity: 0,
-                        child:
-                        SizedBox(
-                          width: screenSize.width * 0.28, // Adjust width as needed
-                          height: screenSize.height * 0.07, // Adjust height as needed
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => DecideOption(firstName: firstController.text,seconedName: secondController.text, date: dateController.text)),
-                              );
-                            },
-                            child: Text('Go to Page 2'),),
+                      SizedBox(height: screenSize.height * 0.303),
+                      Row(children: [
+                        SizedBox(width: screenSize.width * 0.34,),
+                        Opacity(
+                          opacity: 0,
+                          child: SizedBox(
+                            width: screenSize.width * 0.28,
+                            height: screenSize.height * 0.07,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DecideOption(
+                                      firstName: firstController.text,
+                                      seconedName: secondController.text,
+                                      date: dateController.text,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text('Go to Page 2'),
+                            ),
+                          ),
                         ),
 
-                      ),
-                    ],)
-                  ],
-                ),
+                      ],),
+                    ],
+                  ),
+
+                ],)
               ),
             ),
-
           ),
-          Container(width: screenSize.width * 0.34),
-
-        ],)
-
+        ],
       ),
     );
   }
