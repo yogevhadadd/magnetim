@@ -46,12 +46,12 @@ class BeforeCamera extends StatelessWidget {
             ]),),
             Container(width: screenSize.width, child: Row(children: [
             SizedBox(width: screenSize.width * 0.3,),
-            Container(child: Text("The Wedding",
-            style: TextStyle(
-              fontFamily: 'DancingScript-VariableFont_wght',
-
-              fontSize: screenSize.width * 0.08, // Change this value to your desired text size
-            ),),),
+            // Container(child: Text("The Wedding",
+            // style: TextStyle(
+            //   fontFamily: 'DancingScript-VariableFont_wght',
+            //
+            //   fontSize: screenSize.width * 0.08, // Change this value to your desired text size
+            // ),),),
             SizedBox(width: screenSize.width * 0.1,),
             ]),),
             Container(width: screenSize.width, child: Row(children: [
