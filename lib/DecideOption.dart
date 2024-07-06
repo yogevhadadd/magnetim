@@ -21,7 +21,7 @@ class DecideOption extends StatelessWidget {
         height: double.infinity,
         decoration: const BoxDecoration(
         image: DecorationImage(
-        image: AssetImage('assets/mainPage.jpeg'),
+        image: AssetImage('assets/mainPage.png'),
     fit: BoxFit.cover,
     ),
     ),
@@ -54,18 +54,18 @@ class DecideOption extends StatelessWidget {
           SizedBox(width: screenSize.width * 0.1,),
         ]),),
       ],)),
-      SizedBox(height: screenSize.height * 0.2,),
+      SizedBox(height: screenSize.height * 0.13,),
       Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(width: screenSize.width * 0.05,),
+            SizedBox(width: screenSize.width * 0.11,),
             Opacity(
-              opacity: 0.5,
+              opacity: 0,
               child:
               SizedBox(
-                width: screenSize.width * 0.2, // 80% of screen width
-                height: screenSize.height * 0.15,
+                width: screenSize.width * 0.22, // 80% of screen width
+                height: screenSize.height * 0.2,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -77,13 +77,13 @@ class DecideOption extends StatelessWidget {
                   child: Text('Go to Page 2'),                        ),
               ),
             ),
-            SizedBox(width: screenSize.width * 0.1,),
+            SizedBox(width: screenSize.width * 0.09,),
             Opacity(
-              opacity: 1,
+              opacity: 0,
               child:
               SizedBox(
-                width: screenSize.width * 0.2, // 80% of screen width
-                height: screenSize.height * 0.15,
+                width: screenSize.width * 0.22, // 80% of screen width
+                height: screenSize.height * 0.2,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -94,13 +94,13 @@ class DecideOption extends StatelessWidget {
                   child: Text('Go to Page 2'),                        ),
               ),
             ),
-            SizedBox(width: screenSize.width * 0.1,),
+            SizedBox(width: screenSize.width * 0.09,),
             Opacity(
               opacity: 0,
               child:
               SizedBox(
-                width: screenSize.width * 0.2, // 80% of screen width
-                height: screenSize.height * 0.15,
+                width: screenSize.width * 0.22, // 80% of screen width
+                height: screenSize.height * 0.2,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(

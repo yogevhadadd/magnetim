@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'CameraPage.dart';
+import 'DecideOption.dart';
 
 class BeforeCamera extends StatelessWidget {
   final String camera;
@@ -14,85 +15,114 @@ class BeforeCamera extends StatelessWidget {
 
     return Scaffold(
 
-      body:
-      Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/cameraPage.jpeg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child:Column(children: [
-            SizedBox(height: screenSize.height * 0.38,),
-            Container(height: screenSize.height * 0.3,child: Column(children: [
-              Container(width: screenSize.width, child: Row(children: [
-                SizedBox(width: screenSize.width * 0.18,),
-              Container(child: Text(firstName,
-                        style: TextStyle(
-                          fontFamily: 'DancingScript-VariableFont_wght',
-
-                          fontSize: screenSize.width * 0.1, // Change this value to your desired text size
-              ),),),
-              SizedBox(width: screenSize.width * 0.2,),
-              Container(child: Text(seconedName,
-                       style: TextStyle(
-                         fontFamily: 'DancingScript-VariableFont_wght',
-
-                         fontSize: screenSize.width * 0.1, // Change this value to your desired text size
-            ),),),
-            SizedBox(width: screenSize.width * 0.1,),
-            ]),),
-            Container(width: screenSize.width, child: Row(children: [
-            SizedBox(width: screenSize.width * 0.3,),
-            // Container(child: Text("The Wedding",
-            // style: TextStyle(
-            //   fontFamily: 'DancingScript-VariableFont_wght',
-            //
-            //   fontSize: screenSize.width * 0.08, // Change this value to your desired text size
-            // ),),),
-            SizedBox(width: screenSize.width * 0.1,),
-            ]),),
-            Container(width: screenSize.width, child: Row(children: [
-            SizedBox(width: screenSize.width * 0.38,),
-            Container(child: Text(date,
-            style: TextStyle(
-              fontFamily: 'DancingScript-VariableFont_wght',
-
-              fontSize: screenSize.width * 0.06, // Change this value to your desired text size
-            ),),),
-            SizedBox(width: screenSize.width * 0.1,),
-            ]),),
-            ],)),
-            SizedBox(height: screenSize.height * 0.07,),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: screenSize.width * 0.385,),
-                  Opacity(
-                    opacity: 0,
-                    child:
-                    SizedBox(
-                      width: screenSize.width * 0.25, // 80% of screen width
-                      height: screenSize.height * 0.18,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                              MaterialPageRoute(builder: (context) => CameraPage(camera: camera,firstName: firstName,seconedName: seconedName,date: date),)
-                          );
-                        },
-                        child: Text('Go to Page 2'),                        ),
-                    ),
-                  ),
-                  SizedBox(width: screenSize.width * 0.365,),
-                ],
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/cameraPage.jpeg'),
+                fit: BoxFit.cover,
               ),
             ),
-          ],)
-      ),
+            child:Column(children: [
+              SizedBox(height: screenSize.height * 0.38,),
+              Container(height: screenSize.height * 0.3,child: Column(children: [
+                Container(width: screenSize.width, child: Row(children: [
+                  SizedBox(width: screenSize.width * 0.18,),
+                  Container(child: Text(firstName,
+                    style: TextStyle(
+                      fontFamily: 'DancingScript-VariableFont_wght',
+
+                      fontSize: screenSize.width * 0.1, // Change this value to your desired text size
+                    ),),),
+                  SizedBox(width: screenSize.width * 0.2,),
+                  Container(child: Text(seconedName,
+                    style: TextStyle(
+                      fontFamily: 'DancingScript-VariableFont_wght',
+
+                      fontSize: screenSize.width * 0.1, // Change this value to your desired text size
+                    ),),),
+                  SizedBox(width: screenSize.width * 0.1,),
+                ]),),
+                Container(width: screenSize.width, child: Row(children: [
+                  SizedBox(width: screenSize.width * 0.3,),
+                  // Container(child: Text("The Wedding",
+                  // style: TextStyle(
+                  //   fontFamily: 'DancingScript-VariableFont_wght',
+                  //
+                  //   fontSize: screenSize.width * 0.08, // Change this value to your desired text size
+                  // ),),),
+                  SizedBox(width: screenSize.width * 0.1,),
+                ]),),
+                Container(width: screenSize.width, child: Row(children: [
+                  SizedBox(width: screenSize.width * 0.38,),
+                  Container(child: Text(date,
+                    style: TextStyle(
+                      fontFamily: 'DancingScript-VariableFont_wght',
+
+                      fontSize: screenSize.width * 0.06, // Change this value to your desired text size
+                    ),),),
+                  SizedBox(width: screenSize.width * 0.1,),
+                ]),),
+              ],)),
+              SizedBox(height: screenSize.height * 0.03,),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: screenSize.width * 0.355,),
+                    Opacity(
+                      opacity: 0,
+                      child:
+                      SizedBox(
+                        width: screenSize.width * 0.29, // 80% of screen width
+                        height: screenSize.height * 0.22,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CameraPage(camera: camera,firstName: firstName,seconedName: seconedName,date: date),)
+                            );
+                          },
+                          child: Text('Go to Page 2'),                        ),
+                      ),
+                    ),
+                    SizedBox(width: screenSize.width * 0.365,),
+                  ],
+                ),
+              ),
+
+            ],),
+
+          ),
+          Positioned(
+            top: screenSize.height * 0,
+            right: screenSize.width * 0.1,
+            child: Opacity(
+              opacity: 0,
+              child: SizedBox(
+                width: screenSize.width * 0.2,
+                height: screenSize.height * 0.13,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DecideOption(
+                          firstName: firstName,
+                          seconedName : seconedName ,date: date,
+                        ),
+                      ),
+                    );
+                  }, child: Text('Back'),
+                ),
+              ),
+            ),
+          )
+        ],
+      )
     );
   }
 }

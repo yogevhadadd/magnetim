@@ -4,7 +4,9 @@ import 'package:flutter/services.dart' show rootBundle;
 // import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
+import 'BeforeCamera.dart';
 import 'CameraPage.dart';
+import 'DecideOption.dart';
 // import 'package:insta_moment/page5.dart';
 
 class MisgertAz extends StatefulWidget {
@@ -29,11 +31,99 @@ class MisgertAz extends StatefulWidget {
 
 class _MisgertAzState extends State<MisgertAz> {
   File? _image;
+  int? selectedNumber = 1;
 
   @override
   void initState() {
     super.initState();
     _loadImageFromPath();
+  }
+
+
+  void showNumberPickerDialog() {
+    final screenSize = MediaQuery.of(context).size;
+    final FixedExtentScrollController _controller = FixedExtentScrollController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40.0), // Adjust the radius as needed
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            height: screenSize.height * 0.5,
+            width: screenSize.width * 0.6,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/amount.png'), // Path to the background image
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(20.0), // Same radius as in AlertDialog
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: screenSize.height * 0.03),
+                GestureDetector(
+                  onVerticalDragUpdate: (details) {
+                    setState(() {
+                      _controller.jumpTo(_controller.offset - details.delta.dy);
+                    });
+                  },
+                  child: Container(
+                    width: screenSize.width * 0.4,
+                    height: screenSize.height * 0.3,
+                    color: Colors.transparent,
+                    child: ListWheelScrollView.useDelegate(
+                      itemExtent: 100,
+                      perspective: 0.005,
+                      physics: FixedExtentScrollPhysics(),
+                      controller: _controller,
+                      onSelectedItemChanged: (index) {
+                        setState(() {
+                          selectedNumber = (index % 4) + 1;
+                        });
+                      },
+                      childDelegate: ListWheelChildBuilderDelegate(
+                        builder: (context, index) {
+                          var number = (index % 4) + 1;
+                          return Center(
+                            child: Text(
+                              '$number',
+                              style: TextStyle(
+                                fontFamily: 'DancingScript-VariableFont_wght',
+                                fontSize: 100,
+                                color: Colors.black,
+                              ),
+                            ),
+                          );
+                        },
+                        childCount: 1000, // Arbitrarily large number to simulate infinite scrolling
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: screenSize.height * 0.11),
+                Opacity(
+                  opacity: 0,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _uploadImage();
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: screenSize.width * 0.2,
+                      height: screenSize.height * 0.05,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _loadImageFromPath() async {
@@ -54,7 +144,7 @@ class _MisgertAzState extends State<MisgertAz> {
   Future<void> _uploadImage() async {
     if (_image == null) return;
     try {
-      final fileName = '${DateTime.now().millisecondsSinceEpoch}-11.png';
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}-${selectedNumber}-11.png';
       final ref = FirebaseStorage.instance.ref().child(fileName);
       await ref.putFile(_image!);
       final url = await ref.getDownloadURL();
@@ -62,6 +152,8 @@ class _MisgertAzState extends State<MisgertAz> {
     } catch (e) {
       print('Error uploading image: $e');
     }
+    selectedNumber = 1;
+
   }
 
   @override
@@ -178,14 +270,14 @@ class _MisgertAzState extends State<MisgertAz> {
           ),
           Positioned(
             top: screenSize.height * 0.77,
-            right: screenSize.width * 0.15,
+            right: screenSize.width * 0.1,
             child: Opacity(
               opacity: 0,
               child: SizedBox(
                 width: screenSize.width * 0.2,
                 height: screenSize.height * 0.13,
                 child: ElevatedButton(
-                  onPressed:  _uploadImage,
+                  onPressed:  showNumberPickerDialog,
                   child: Text('Back'),
                 ),
               ),
@@ -205,6 +297,52 @@ class _MisgertAzState extends State<MisgertAz> {
                 ),
               ),
             ),
+          ),
+          Positioned(
+            top: screenSize.height * 0,
+            right: screenSize.width * 0.4,
+            child: Opacity(
+              opacity: 0,
+              child: SizedBox(
+                width: screenSize.width * 0.2,
+                height: screenSize.height * 0.13,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>
+                            BeforeCamera(camera: "azMisgert",firstName: widget.firstName,
+                                seconedName : widget.seconedName ,date:widget.date),)
+                    );
+                  },
+                  child: Text('Back'),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: screenSize.height * 0,
+            right: screenSize.width * 0.1,
+            child: Opacity(
+              opacity: 0,
+              child: SizedBox(
+                width: screenSize.width * 0.2,
+                height: screenSize.height * 0.13,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DecideOption(
+                          firstName: widget.firstName,
+                          seconedName : widget.seconedName ,date:widget.date,
+                        ),
+                      ),
+                    );
+                  }, child: Text('Back'),
+              ),
+            ),
+          ),
           )
         ],
       ),
